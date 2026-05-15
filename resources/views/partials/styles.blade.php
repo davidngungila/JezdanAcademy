@@ -366,8 +366,8 @@ tr:hover td{background:rgba(245,132,52,0.04);}
   .sidebar{transform:translateX(-100%); width: 280px; z-index: 1000;}
   .sidebar.open{transform:translateX(0);}
   .main-wrap{margin-left:0 !important;}
-  .menu-btn{display:flex;}
-  .sidebar-overlay{display:block;}
+  .menu-btn{display:flex !important;}
+  .sidebar-overlay{display:none; position:fixed; inset:0; background:rgba(11,31,58,.5); z-index:99; backdrop-filter:blur(2px);}
   .stats-grid{grid-template-columns: 1fr;}
   .course-grid{grid-template-columns: 1fr;}
   .grid-2, .grid-3{grid-template-columns: 1fr;}
@@ -381,5 +381,6 @@ tr:hover td{background:rgba(245,132,52,0.04);}
   .topbar-right .icon-btn:nth-child(2) { display: none; }
   .section-header{flex-direction: column; align-items: flex-start; gap: 12px;}
   .section-header button { width: 100%; }
+  .auth-box { padding: 32px 24px; }
 }
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(11,31,58,.5);z-index:99;backdrop-filter:blur(2px);}

@@ -6,12 +6,20 @@ if (todayDateEl) {
 
 // ─── SIDEBAR ───
 function toggleSidebar(){
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebarOverlay').style.display = document.getElementById('sidebar').classList.contains('open')?'block':'none';
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('open');
+        overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+    }
 }
 function closeSidebar(){
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').style.display='none';
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar && overlay) {
+        sidebar.classList.remove('open');
+        overlay.style.display = 'none';
+    }
 }
 
 // ─── LOADER ───
@@ -19,29 +27,45 @@ function showLoader(){const l=document.getElementById('topLoader');if(l){l.style
 function hideLoader(){const l=document.getElementById('topLoader');if(l){l.style.width='100%';setTimeout(()=>{l.style.width='0';l.style.display='none';},400);}}
 
 // ─── THEME ───
-let dark = false;
+let dark = localStorage.getItem('theme') === 'dark';
+function applyTheme() {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) themeIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    const t2 = document.getElementById('darkModeToggle2');
+    if (t2) t2.checked = dark;
+}
 function toggleTheme() {
     dark = !dark;
-    document.documentElement.setAttribute('data-theme', dark?'dark':'light');
-    const themeIcon = document.getElementById('themeIcon');
-    if (themeIcon) themeIcon.className = dark?'fa-solid fa-sun':'fa-solid fa-moon';
-    const t2 = document.getElementById('darkModeToggle2');
-    if(t2) t2.checked = dark;
+    localStorage.setItem('theme', dark ? 'dark' : 'white');
+    applyTheme();
 }
+// Apply on load
+applyTheme();
 
 // ─── MODAL ───
 function showModal(id){
     const modal = document.getElementById(id);
     if (modal) {
         modal.classList.add('open');
-        if(id==='quizModal') startQuiz();
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+        if(id==='quizModal' && typeof startQuiz === 'function') startQuiz();
     }
 }
 function closeModal(id){
     const modal = document.getElementById(id);
-    if (modal) modal.classList.remove('open');
+    if (modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = ''; // Restore scroll
+    }
 }
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');}));
+// Global close on overlay click
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+});
 
 // ─── TOAST ───
 function showToast(msg, icon='fa-circle-info') {
@@ -49,12 +73,13 @@ function showToast(msg, icon='fa-circle-info') {
     t.className='toast';
     t.innerHTML=`<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
     document.body.appendChild(t);
-    setTimeout(()=>{t.style.animation='slideIn .3s ease reverse';setTimeout(()=>t.remove(),300);},3000);
+    setTimeout(()=>{
+        t.style.animation='slideIn .3s ease reverse';
+        setTimeout(()=>t.remove(),300);
+    },3000);
 }
 
-// ─── NAVIGATION (Blade-friendly version) ───
-// In a real Laravel app, these would be separate routes.
-// For this design task, we can simulate page switching or just use standard links.
+// ─── NAVIGATION ───
 function navigateTo(url) {
     showLoader();
     window.location.href = url;
