@@ -85,9 +85,9 @@
 <script>
     // Global Scripts (Theme, Sidebar, Loader, Toast, Modals)
     @include('partials.scripts')
-    
-    @stack('scripts')
 </script>
+
+@stack('scripts')
 
 </body>
 </html>

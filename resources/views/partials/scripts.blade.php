@@ -37,7 +37,7 @@ function applyTheme() {
 }
 function toggleTheme() {
     dark = !dark;
-    localStorage.setItem('theme', dark ? 'dark' : 'white');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
     applyTheme();
 }
 // Apply on load
