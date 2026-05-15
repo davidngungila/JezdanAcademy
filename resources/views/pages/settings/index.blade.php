@@ -5,22 +5,41 @@
 
 @section('content')
 <div class="section-header"><div><h2>Settings</h2><p>Manage your profile and preferences</p></div></div>
+
+@if(session('success'))
+    <div class="info-box success mb-24"><i class="fa-solid fa-check-circle"></i><p>{{ session('success') }}</p></div>
+@endif
+
 <div class="grid-2">
     <div class="card mb-20">
         <div class="card-header"><span class="card-title">Profile Information</span></div>
         <div class="card-body">
-            <div style="text-align:center;margin-bottom:20px">
-                <div style="width:72px;height:72px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 10px">JD</div>
-                <button class="btn btn-outline btn-sm" onclick="showToast('Photo upload opened','fa-camera')"><i class="fa-solid fa-camera"></i> Change Photo</button>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>First Name</label><input class="form-control" value="John"></div>
-                <div class="form-group"><label>Last Name</label><input class="form-control" value="Doe"></div>
-            </div>
-            <div class="form-group"><label>Email</label><input class="form-control" value="john.doe@jezdan.co.tz"></div>
-            <div class="form-group"><label>Phone</label><input class="form-control" value="+255 712 345 678"></div>
-            <div class="form-group"><label>Location</label><input class="form-control" value="Dar es Salaam, Tanzania"></div>
-            <button class="btn btn-primary" style="width:100%" onclick="showToast('Profile updated successfully!','fa-check-circle')"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+            <form action="/settings" method="POST">
+                @csrf
+                <div style="text-align:center;margin-bottom:20px">
+                    <div style="width:72px;height:72px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 10px">
+                        {{ strtoupper(substr($user->name, 0, 2)) }}
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="showToast('Photo upload opened','fa-camera')"><i class="fa-solid fa-camera"></i> Change Photo</button>
+                </div>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input class="form-control" name="name" value="{{ old('name', $user->name) }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Email (Read-only)</label>
+                    <input class="form-control" value="{{ $user->email }}" readonly style="opacity: 0.7; cursor: not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input class="form-control" name="phone" value="{{ old('phone', $user->phone) }}">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input class="form-control" name="location" value="{{ old('location', $user->location) }}">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+            </form>
         </div>
     </div>
     <div>

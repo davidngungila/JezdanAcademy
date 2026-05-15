@@ -12,6 +12,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             CourseSeeder::class,
+            EnrollmentSeeder::class,
+            CertificateSeeder::class,
+            ExamSeeder::class,
+            ResourceSeeder::class,
+            LiveSessionSeeder::class,
         ]);
     }
 }

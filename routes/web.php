@@ -23,11 +23,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/courses', [CourseController::class, 'index'])->name('courses');
     
-    Route::get('/my-learning', function () { return view('pages.learning.index'); })->name('learning');
-    Route::get('/exams', function () { return view('pages.exams.index'); })->name('exams');
-    Route::get('/certificates', function () { return view('pages.certificates.index'); })->name('certificates');
-    Route::get('/library', function () { return view('pages.library.index'); })->name('library');
-    Route::get('/live-sessions', function () { return view('pages.live.index'); })->name('live');
+    Route::get('/my-learning', [DashboardController::class, 'myLearning'])->name('learning');
+    Route::get('/exams', [DashboardController::class, 'exams'])->name('exams');
+    Route::get('/certificates', [DashboardController::class, 'certificates'])->name('certificates');
+    Route::get('/library', [DashboardController::class, 'library'])->name('library');
+    Route::get('/live-sessions', [DashboardController::class, 'liveSessions'])->name('live');
+    
+    Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
+    Route::post('/settings', [DashboardController::class, 'updateSettings']);
+
+    // Other pages (Keep as is for now or implement as needed)
     Route::get('/instructor', function () { return view('pages.instructor.index'); })->name('instructor');
     Route::get('/admin', function () { return view('pages.admin.index'); })->name('admin');
     Route::get('/organizations', function () { return view('pages.organizations.index'); })->name('organizations');
@@ -38,5 +43,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/achievements', function () { return view('pages.gamification.index'); })->name('achievements');
     Route::get('/payments', function () { return view('pages.payments.index'); })->name('payments');
     Route::get('/security', function () { return view('pages.security.index'); })->name('security');
-    Route::get('/settings', function () { return view('pages.settings.index'); })->name('settings');
 });

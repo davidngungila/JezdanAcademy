@@ -2,25 +2,91 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
+use App\Models\Certificate;
+use App\Models\Enrollment;
+use App\Models\Exam;
+use App\Models\LiveSession;
+use App\Models\Resource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $user = Auth::user();
         $role = $user->role;
 
-        $data = [
+        return view('pages.dashboard.index', [
             'role' => $role,
             'user' => $user,
             'stats' => $this->getStats($role, $user),
-        ];
+        ]);
+    }
 
-        return view('pages.dashboard.index', $data);
+    public function myLearning()
+    {
+        $user = Auth::user();
+        $enrollments = $user->enrollments()->with('course')->get();
+        
+        return view('pages.learning.index', [
+            'enrollments' => $enrollments,
+            'stats' => [
+                'enrolled' => $enrollments->count(),
+                'completed' => $enrollments->where('progress', 100)->count(),
+                'time' => '46h', // Mocked
+                'rating' => '4.7' // Mocked
+            ]
+        ]);
+    }
+
+    public function exams()
+    {
+        $exams = Exam::with('course')->get();
+        $results = Certificate::where('user_id', Auth::id())->with('course')->get();
+        
+        return view('pages.exams.index', compact('exams', 'results'));
+    }
+
+    public function certificates()
+    {
+        $certificates = Auth::user()->certificates()->with('course')->get();
+        return view('pages.certificates.index', compact('certificates'));
+    }
+
+    public function library()
+    {
+        $resources = Resource::all();
+        return view('pages.library.index', compact('resources'));
+    }
+
+    public function liveSessions()
+    {
+        $sessions = LiveSession::with('instructor')->orderBy('scheduled_at', 'asc')->get();
+        $history = LiveSession::where('status', 'Completed')->with('instructor')->get();
+        
+        return view('pages.live.index', compact('sessions', 'history'));
+    }
+
+    public function settings()
+    {
+        return view('pages.settings.index', ['user' => Auth::user()]);
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'location' => 'nullable|string|max:255',
+        ]);
+
+        $user->update($data);
+
+        return back()->with('success', 'Profile updated successfully!');
     }
 
     private function getStats($role, $user)
@@ -30,8 +96,8 @@ class DashboardController extends Controller
                 return [
                     'revenue' => '$45,230',
                     'users' => User::count(),
-                    'courses' => Course::count(),
-                    'certificates' => 892,
+                    'courses' => \App\Models\Course::count(),
+                    'certificates' => Certificate::count(),
                 ];
             case 'instructor':
                 return [
@@ -49,9 +115,9 @@ class DashboardController extends Controller
                 ];
             default:
                 return [
-                    'enrolled' => $user->enrolledCourses()->count(),
-                    'completed' => 3,
-                    'certs' => 5,
+                    'enrolled' => $user->enrollments()->count(),
+                    'completed' => $user->enrollments()->where('progress', 100)->count(),
+                    'certs' => $user->certificates()->count(),
                     'streak' => 7,
                 ];
         }
