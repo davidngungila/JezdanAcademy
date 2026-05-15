@@ -85,6 +85,8 @@
 </div>
 
 <script>
+    let selectedRole = 'student';
+
     function switchAuthTab(tab) {
         if (tab === 'login') {
             window.location.href = '/login';
@@ -94,12 +96,22 @@
     }
     
     function selectRole(el, role) {
+        selectedRole = role;
         document.querySelectorAll('.role-pill').forEach(p=>p.classList.remove('active'));
         el.classList.add('active');
+        
+        // Update sample email based on role
+        const emailInput = document.getElementById('loginEmail');
+        if(emailInput) {
+            if(role === 'student') emailInput.value = 'student@jezdan.co.tz';
+            else if(role === 'instructor') emailInput.value = 'james.k@jezdan.co.tz';
+            else if(role === 'admin') emailInput.value = 'admin@jezdan.co.tz';
+            else if(role === 'org_manager') emailInput.value = 'manager@techcorp.co.tz';
+        }
     }
     
     function doLogin() {
-        window.location.href = '/dashboard';
+        window.location.href = '/dashboard?role=' + selectedRole;
     }
 </script>
 

@@ -11,10 +11,10 @@
     <!-- LOGIN FORM -->
     <div id="loginForm">
         <div class="role-pills">
-            <div class="role-pill active" onclick="selectRole(this,'Student')">🎓 Student</div>
-            <div class="role-pill" onclick="selectRole(this,'Instructor')">👩‍🏫 Instructor</div>
-            <div class="role-pill" onclick="selectRole(this,'Admin')">⚙️ Admin</div>
-            <div class="role-pill" onclick="selectRole(this,'Org Manager')">🏢 Org Manager</div>
+            <div class="role-pill active" onclick="selectRole(this,'student')">🎓 Student</div>
+            <div class="role-pill" onclick="selectRole(this,'instructor')">👩‍🏫 Instructor</div>
+            <div class="role-pill" onclick="selectRole(this,'admin')">⚙️ Admin</div>
+            <div class="role-pill" onclick="selectRole(this,'org_manager')">🏢 Org Manager</div>
         </div>
         <div class="auth-field"><label>Email Address</label><input type="email" placeholder="john.doe@gmail.com" id="loginEmail" value="student@jezdan.co.tz"></div>
         <div class="auth-field"><label>Password</label><input type="password" placeholder="••••••••" value="demo1234"></div>
