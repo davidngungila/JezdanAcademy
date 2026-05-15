@@ -85,7 +85,7 @@
 <div class="modal-overlay" id="mpesaModal">
   <div class="modal">
     <div class="modal-header">
-      <h3><span style="color:#00b050;font-family:'Syne',sans-serif">M-PESA</span> Payment</h3>
+      <h3><span style="color:#00b050">M-PESA</span> Payment</h3>
       <div class="modal-close" onclick="closeModal('mpesaModal')"><i class="fa-solid fa-xmark"></i></div>
     </div>
     <div class="modal-body">

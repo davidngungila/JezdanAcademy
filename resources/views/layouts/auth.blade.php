@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Auth – Jezdan Digital Academy')</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
@@ -33,7 +33,6 @@
 
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:var(--transition);overflow-x:hidden;}
-        h1,h2,h3,h4,h5{font-family:'Syne',sans-serif;}
         a{text-decoration:none;color:inherit;}
         button{cursor:pointer;border:none;outline:none;font-family:'DM Sans',sans-serif;}
         input,select,textarea{font-family:'DM Sans',sans-serif;outline:none;}

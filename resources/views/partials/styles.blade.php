@@ -34,7 +34,7 @@
 .topbar-left{display:flex;align-items:center;gap:12px;flex:1;}
 .menu-btn{width:36px;height:36px;border-radius:8px;background:transparent;color:var(--text-muted);font-size:16px;display:none;align-items:center;justify-content:center;transition:var(--transition);}
 .menu-btn:hover{background:var(--bg);color:var(--accent);}
-.page-title{font-size:18px;font-weight:700;color:var(--text);font-family:'Syne',sans-serif;}
+.page-title{font-size:18px;font-weight:700;color:var(--text);}
 .search-bar{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 14px;width:280px;transition:var(--transition);}
 .search-bar:focus-within{border-color:var(--accent);background:#fff;}
 .search-bar i{color:var(--text-muted);font-size:13px;}
@@ -80,7 +80,7 @@
 /* ─── CARDS ─── */
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);}
 .card-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.card-title{font-size:15px;font-weight:700;color:var(--text);font-family:'Syne',sans-serif;}
+.card-title{font-size:15px;font-weight:700;color:var(--text);}
 .card-body{padding:20px;}
 
 /* ─── GRID HELPERS ─── */
