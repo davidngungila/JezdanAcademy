@@ -59,11 +59,25 @@ function closeModal(id){
         document.body.style.overflow = ''; // Restore scroll
     }
 }
-// Global close on overlay click
+
+// ─── PROFILE DROPDOWN ───
+function toggleProfileMenu(e) {
+    e.stopPropagation();
+    document.getElementById('profileDropdown').classList.toggle('open');
+}
+
+// Global close logic
 document.addEventListener('click', function(e) {
+    // Close sidebar overlay
     if (e.target.classList.contains('modal-overlay')) {
         e.target.classList.remove('open');
         document.body.style.overflow = '';
+    }
+    
+    // Close profile dropdown
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown && !dropdown.contains(e.target) && !e.target.closest('.profile-chip')) {
+        dropdown.classList.remove('open');
     }
 });
 

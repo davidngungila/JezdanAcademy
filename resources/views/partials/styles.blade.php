@@ -51,6 +51,22 @@
 .profile-chip .ava{width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
 .profile-chip span{font-size:13px;font-weight:600;color:var(--text);}
 
+/* ─── PROFILE DROPDOWN ─── */
+.profile-container{position:relative;}
+.profile-dropdown{position:absolute;top:calc(100% + 10px);right:0;width:220px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);display:none;z-index:100;animation:fadeUp .2s ease;}
+.profile-dropdown.open{display:block;}
+.dropdown-header{padding:16px;display:flex;flex-direction:column;}
+.dropdown-header strong{font-size:14px;color:var(--text);font-weight:700;}
+.dropdown-header span{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.dropdown-divider{height:1px;background:var(--border);margin:4px 0;}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13.5px;color:var(--text);transition:var(--transition);cursor:pointer;}
+.dropdown-item i{width:16px;text-align:center;font-size:14px;color:var(--text-muted);}
+.dropdown-item:hover{background:var(--bg);color:var(--accent);}
+.dropdown-item:hover i{color:var(--accent);}
+.dropdown-item.logout{color:var(--danger);}
+.dropdown-item.logout i{color:var(--danger);}
+.dropdown-item.logout:hover{background:rgba(239,68,68,0.05);}
+
 /* ─── CONTENT ─── */
 .content{flex:1;padding:28px;overflow-y:auto;}
 .section-page{display:none;}

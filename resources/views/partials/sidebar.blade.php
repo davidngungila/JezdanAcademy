@@ -72,13 +72,5 @@
             <i class="fa-solid fa-gear"></i> Settings
         </a>
     </div>
-
-    <div class="sidebar-footer">
-        <div class="user-mini">
-            <div class="ava">JD</div>
-            <div class="info"><strong>John Doe</strong><span id="currentRoleLabel">Student</span></div>
-            <i class="fa-solid fa-ellipsis"></i>
-        </div>
-    </div>
 </aside>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
