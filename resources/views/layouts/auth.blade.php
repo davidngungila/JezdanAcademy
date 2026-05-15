@@ -56,10 +56,12 @@
         .auth-field select option{background:#0b1f3a;color:#fff;}
         .auth-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;transition:var(--transition);margin-top:8px;}
         .auth-btn:hover{background:var(--accent-light);transform:translateY(-1px);}
-        .auth-divider{text-align:center;color:rgba(255,255,255,0.3);font-size:13px;margin:18px 0;}
-        .social-btns{display:flex;gap:10px;}
-        .social-btn{flex:1;padding:11px;border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:rgba(255,255,255,0.75);font-size:13px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;gap:8px;transition:var(--transition);cursor:pointer;}
-        .social-btn:hover{border-color:var(--accent);color:var(--accent);}
+        .auth-divider{display:flex;align-items:center;color:rgba(255,255,255,0.3);font-size:12px;margin:24px 0;text-transform:uppercase;letter-spacing:1px;}
+        .auth-divider::before, .auth-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1);margin:0 12px;}
+        .social-btns{display:flex;gap:12px;}
+        .social-btn{flex:1;padding:12px;border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:#fff;font-size:13px;font-weight:600;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;gap:10px;transition:var(--transition);cursor:pointer;}
+        .social-btn:hover{border-color:var(--accent);background:rgba(255,255,255,0.08);transform:translateY(-1px);}
+        .social-btn img{filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1));}
         .role-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
         .role-pill{padding:6px 14px;border-radius:30px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.65);font-size:12px;cursor:pointer;transition:var(--transition);}
         .role-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
@@ -99,19 +101,25 @@
         selectedRole = role;
         document.querySelectorAll('.role-pill').forEach(p=>p.classList.remove('active'));
         el.classList.add('active');
-        
-        // Update sample email based on role
-        const emailInput = document.getElementById('loginEmail');
-        if(emailInput) {
-            if(role === 'student') emailInput.value = 'student@jezdan.co.tz';
-            else if(role === 'instructor') emailInput.value = 'james.k@jezdan.co.tz';
-            else if(role === 'admin') emailInput.value = 'admin@jezdan.co.tz';
-            else if(role === 'org_manager') emailInput.value = 'manager@techcorp.co.tz';
-        }
     }
     
     function doLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPassword').value;
+        
+        if(!email || !pass) {
+            alert('Please enter your credentials');
+            return;
+        }
+        
+        // Simulation of login
         window.location.href = '/dashboard?role=' + selectedRole;
+    }
+
+    function socialLogin(provider) {
+        console.log('Logging in with ' + provider);
+        // Simulation: all social logins go to student dashboard for now
+        window.location.href = '/dashboard?role=student';
     }
 </script>
 
