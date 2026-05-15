@@ -105,15 +105,34 @@
     
     function doLogin() {
         const email = document.getElementById('loginEmail').value;
-        const pass = document.getElementById('loginPassword').value;
+        const password = document.getElementById('loginPassword').value;
         
-        if(!email || !pass) {
+        if(!email || !password) {
             alert('Please enter your credentials');
             return;
         }
-        
-        // Simulation of login
-        window.location.href = '/dashboard?role=' + selectedRole;
+
+        // Real login logic via AJAX
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                alert('Login failed. Please check your credentials.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
     }
 
     function socialLogin(provider) {

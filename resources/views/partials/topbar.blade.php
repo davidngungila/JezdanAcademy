@@ -1,5 +1,6 @@
 @php
-    $role = request('role', 'student');
+    $user = auth()->user();
+    $role = $user ? $user->role : 'student';
 @endphp
 
 <header class="topbar">
@@ -13,50 +14,33 @@
     </div>
     <div class="topbar-right">
         <div class="icon-btn" onclick="showModal('notifModal')"><i class="fa-regular fa-bell"></i><span class="dot"></span></div>
-        <div class="icon-btn" onclick="navigateTo('/messages?role={{ $role }}')"><i class="fa-regular fa-envelope"></i><span class="dot"></span></div>
+        <div class="icon-btn" onclick="navigateTo('/messages')"><i class="fa-regular fa-envelope"></i><span class="dot"></span></div>
         <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode"><i class="fa-solid fa-moon" id="themeIcon"></i></div>
         <div class="profile-container">
             <div class="profile-chip" onclick="toggleProfileMenu(event)">
                 <div class="ava">
-                    @if($role == 'student') JD
-                    @elseif($role == 'instructor') JK
-                    @elseif($role == 'admin') AD
-                    @elseif($role == 'org_manager') TC
-                    @endif
+                    {{ strtoupper(substr($user->name ?? 'JD', 0, 2)) }}
                 </div>
-                <span>
-                    @if($role == 'student') John Doe
-                    @elseif($role == 'instructor') James Kimaro
-                    @elseif($role == 'admin') Admin User
-                    @elseif($role == 'org_manager') TechCorp Manager
-                    @endif
-                </span>
+                <span>{{ $user->name ?? 'John Doe' }}</span>
                 <i class="fa-solid fa-chevron-down" style="font-size:10px;color:var(--text-muted)"></i>
             </div>
             <div class="profile-dropdown" id="profileDropdown">
                 <div class="dropdown-header">
-                    <strong>
-                        @if($role == 'student') John Doe
-                        @elseif($role == 'instructor') James Kimaro
-                        @elseif($role == 'admin') Admin User
-                        @elseif($role == 'org_manager') TechCorp Manager
-                        @endif
-                    </strong>
-                    <span>
-                        @if($role == 'student') john.doe@jezdan.co.tz
-                        @elseif($role == 'instructor') james.k@jezdan.co.tz
-                        @elseif($role == 'admin') admin@jezdan.co.tz
-                        @elseif($role == 'org_manager') manager@techcorp.co.tz
-                        @endif
-                    </span>
+                    <strong>{{ $user->name ?? 'John Doe' }}</strong>
+                    <span>{{ $user->email ?? 'john.doe@jezdan.co.tz' }}</span>
                     <span class="badge badge-orange" style="margin-top:8px; font-size:10px; text-transform:uppercase">{{ str_replace('_', ' ', $role) }}</span>
                 </div>
                 <div class="dropdown-divider"></div>
-                <a href="/settings?role={{ $role }}" class="dropdown-item"><i class="fa-regular fa-user"></i> Profile</a>
-                <a href="/security?role={{ $role }}" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> Account</a>
-                <a href="/settings?role={{ $role }}" class="dropdown-item"><i class="fa-solid fa-gear"></i> Setting</a>
+                <a href="/settings" class="dropdown-item"><i class="fa-regular fa-user"></i> Profile</a>
+                <a href="/security" class="dropdown-item"><i class="fa-solid fa-shield-halved"></i> Account</a>
+                <a href="/settings" class="dropdown-item"><i class="fa-solid fa-gear"></i> Setting</a>
                 <div class="dropdown-divider"></div>
-                <a href="/login" class="dropdown-item logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <form action="/logout" method="POST" id="logoutForm">
+                    @csrf
+                    <button type="submit" class="dropdown-item logout" style="width:100%; border:none; background:none; text-align:left;">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
     </div>

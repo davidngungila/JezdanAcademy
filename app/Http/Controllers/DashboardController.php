@@ -5,20 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $role = $request->get('role', 'student');
-        
-        // Mocking user for now based on role
-        $user = User::where('role', $role)->first();
-        
-        if (!$user) {
-            $user = User::where('role', 'student')->first();
-            $role = 'student';
-        }
+        $user = Auth::user();
+        $role = $user->role;
 
         $data = [
             'role' => $role,
