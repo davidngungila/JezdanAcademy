@@ -72,7 +72,15 @@ class DashboardController extends Controller
 
     public function settings()
     {
-        return view('pages.settings.index', ['user' => Auth::user()]);
+        $data = [
+            'user' => Auth::user(),
+        ];
+
+        if (Auth::user()->role === 'admin') {
+            $data['systemSettings'] = \App\Models\SystemSetting::all()->groupBy('group');
+        }
+
+        return view('pages.settings.index', $data);
     }
 
     public function updateSettings(Request $request)
@@ -82,7 +90,15 @@ class DashboardController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'location' => 'nullable|string|max:255',
+            'bio' => 'nullable|string|max:1000',
+            'website' => 'nullable|url|max:255',
+            'github' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'language' => 'nullable|string',
+            'dark_mode' => 'nullable|boolean',
+            'offline_mode' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('avatar')) {
@@ -90,9 +106,28 @@ class DashboardController extends Controller
             $data['avatar'] = $path;
         }
 
+        // Handle checkboxes (boolean values)
+        $data['dark_mode'] = $request->has('dark_mode');
+        $data['offline_mode'] = $request->has('offline_mode');
+
         $user->update($data);
 
-        return back()->with('success', 'Profile updated successfully!');
+        return back()->with('success', 'Settings updated successfully!');
+    }
+
+    public function updateSystemSettings(Request $request)
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $settings = $request->except('_token');
+        
+        foreach ($settings as $key => $value) {
+            \App\Models\SystemSetting::where('key', $key)->update(['value' => $value]);
+        }
+
+        return back()->with('success', 'System settings updated successfully!');
     }
 
     public function updatePassword(Request $request)

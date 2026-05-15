@@ -18,20 +18,27 @@ class User extends Authenticatable
         'role',
         'avatar',
         'location',
+        'bio',
+        'website',
+        'github',
+        'twitter',
+        'linkedin',
+        'language',
+        'dark_mode',
+        'offline_mode',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'dark_mode' => 'boolean',
+        'offline_mode' => 'boolean',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
 
     public function enrollments()
     {

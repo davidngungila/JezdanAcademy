@@ -4,7 +4,7 @@
 @section('page_title', 'Settings')
 
 @section('content')
-<div class="section-header"><div><h2>Settings</h2><p>Manage your profile and preferences</p></div></div>
+<div class="section-header"><div><h2>Settings</h2><p>Manage your profile, preferences, and system settings</p></div></div>
 
 @if(session('success'))
     <div class="info-box success mb-24"><i class="fa-solid fa-check-circle"></i><p>{{ session('success') }}</p></div>
@@ -22,47 +22,135 @@
 @endif
 
 <div class="grid-2">
-    <!-- PROFILE UPDATE -->
-    <div class="card mb-20">
-        <div class="card-header"><span class="card-title">Profile Information</span></div>
-        <div class="card-body">
-            <form action="/settings" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div style="text-align:center;margin-bottom:20px">
-                    <div style="width:82px;height:82px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 10px; overflow:hidden;">
-                        @if($user->avatar)
-                            <img src="{{ asset('storage/'.$user->avatar) }}" style="width:100%; height:100%; object-fit:cover;">
-                        @else
-                            {{ strtoupper(substr($user->name, 0, 2)) }}
-                        @endif
+    <div>
+        <!-- PROFILE UPDATE -->
+        <div class="card mb-20">
+            <div class="card-header"><span class="card-title">Profile Information</span></div>
+            <div class="card-body">
+                <form action="/settings" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div style="text-align:center;margin-bottom:20px">
+                        <div style="width:82px;height:82px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 10px; overflow:hidden;">
+                            @if($user->avatar)
+                                <img src="{{ asset('storage/'.$user->avatar) }}" style="width:100%; height:100%; object-fit:cover;">
+                            @else
+                                {{ strtoupper(substr($user->name, 0, 2)) }}
+                            @endif
+                        </div>
+                        <input type="file" name="avatar" id="avatarInput" style="display:none;" onchange="this.form.submit()">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('avatarInput').click()">
+                            <i class="fa-solid fa-camera"></i> Change Photo
+                        </button>
                     </div>
-                    <input type="file" name="avatar" id="avatarInput" style="display:none;" onchange="this.form.submit()">
-                    <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('avatarInput').click()">
-                        <i class="fa-solid fa-camera"></i> Change Photo
-                    </button>
-                </div>
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input class="form-control" name="name" value="{{ old('name', $user->name) }}" required>
-                </div>
-                <div class="form-group">
-                    <label>Email (Read-only)</label>
-                    <input class="form-control" value="{{ $user->email }}" readonly style="opacity: 0.7; cursor: not-allowed;">
-                </div>
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input class="form-control" name="phone" value="{{ old('phone', $user->phone) }}">
-                </div>
-                <div class="form-group">
-                    <label>Location</label>
-                    <input class="form-control" name="location" value="{{ old('location', $user->location) }}">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
-            </form>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input class="form-control" name="name" value="{{ old('name', $user->name) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea class="form-control" name="bio" rows="3" placeholder="Tell us about yourself...">{{ old('bio', $user->bio) }}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input class="form-control" name="phone" value="{{ old('phone', $user->phone) }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input class="form-control" name="location" value="{{ old('location', $user->location) }}">
+                        </div>
+                    </div>
+                    
+                    <div class="card-title mb-10" style="font-size: 13px; margin-top: 10px;">Social Links</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fa-brands fa-github"></i> GitHub</label>
+                            <input class="form-control" name="github" value="{{ old('github', $user->github) }}" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-brands fa-twitter"></i> Twitter</label>
+                            <input class="form-control" name="twitter" value="{{ old('twitter', $user->twitter) }}" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fa-brands fa-linkedin"></i> LinkedIn</label>
+                            <input class="form-control" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" placeholder="Profile URL">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-globe"></i> Website</label>
+                            <input class="form-control" name="website" value="{{ old('website', $user->website) }}" placeholder="https://example.com">
+                        </div>
+                    </div>
+
+                    <div class="card-title mb-10" style="font-size: 13px; margin-top: 10px;">Preferences</div>
+                    <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--border)">
+                        <span>Dark Mode</span>
+                        <label class="toggle">
+                            <input type="checkbox" name="dark_mode" {{ $user->dark_mode ? 'checked' : '' }}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--border)">
+                        <span>Language</span>
+                        <select class="form-control" name="language" style="width:130px">
+                            <option {{ $user->language == 'English' ? 'selected' : '' }}>English</option>
+                            <option {{ $user->language == 'Kiswahili' ? 'selected' : '' }}>Kiswahili</option>
+                            <option {{ $user->language == 'French' ? 'selected' : '' }}>French</option>
+                        </select>
+                    </div>
+                    <div class="flex-between" style="padding:10px 0;margin-bottom: 20px;">
+                        <span>Offline Mode</span>
+                        <label class="toggle">
+                            <input type="checkbox" name="offline_mode" {{ $user->offline_mode ? 'checked' : '' }}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%"><i class="fa-solid fa-floppy-disk"></i> Save All Settings</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <div>
+        @if($user->role === 'admin')
+        <!-- SYSTEM SETTINGS (Admin Only) -->
+        <div class="card mb-20" style="border-color: var(--accent)">
+            <div class="card-header" style="background: var(--accent-pale)"><span class="card-title">System Settings</span></div>
+            <div class="card-body">
+                <form action="{{ route('settings.system') }}" method="POST">
+                    @csrf
+                    @foreach($systemSettings as $group => $settings)
+                        <div class="card-title mb-10" style="font-size: 12px; text-transform: uppercase; color: var(--accent); margin-top: {{ $loop->first ? '0' : '15px' }};">{{ $group }}</div>
+                        @foreach($settings as $setting)
+                            <div class="form-group">
+                                <label>{{ ucwords(str_replace('_', ' ', str_replace($group.'_', '', $setting->key))) }}</label>
+                                <input class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
+                            </div>
+                        @endforeach
+                    @endforeach
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-gear"></i> Update System Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ADMIN ACTIONS -->
+        <div class="card mb-20">
+            <div class="card-header"><span class="card-title">Quick Links</span></div>
+            <div class="card-body">
+                <a href="{{ route('admin.users.index') }}" class="btn btn-outline" style="width: 100%; margin-bottom: 10px;">
+                    <i class="fa-solid fa-users-gear"></i> Manage All Users
+                </a>
+                <a href="{{ route('courses') }}" class="btn btn-outline" style="width: 100%;">
+                    <i class="fa-solid fa-book-open"></i> Manage Catalog
+                </a>
+            </div>
+        </div>
+        @endif
+
         <!-- PASSWORD UPDATE -->
         <div class="card mb-20">
             <div class="card-header"><span class="card-title">Security & Password</span></div>
@@ -85,29 +173,6 @@
                 </form>
             </div>
         </div>
-
-        <!-- PREFERENCES -->
-        <div class="card mb-20">
-            <div class="card-header"><span class="card-title">Preferences</span></div>
-            <div class="card-body">
-                <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span>Dark Mode</span><label class="toggle"><input type="checkbox" id="darkModeToggle2" onchange="toggleTheme()"><span class="toggle-slider"></span></label></div>
-                <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span>Language</span><select class="form-control" style="width:130px"><option>English</option><option>Kiswahili</option><option>French</option></select></div>
-                <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span>Offline Mode</span><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-            </div>
-        </div>
-
-        @if($user->role === 'admin')
-        <!-- ADMIN ACTIONS -->
-        <div class="card mb-20" style="border-color: var(--accent)">
-            <div class="card-header" style="background: var(--accent-pale)"><span class="card-title">Admin Management</span></div>
-            <div class="card-body">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Manage all platform users, roles, and system-wide settings.</p>
-                <a href="{{ route('admin.users.index') }}" class="btn btn-primary" style="width: 100%;">
-                    <i class="fa-solid fa-users-gear"></i> Manage All Users
-                </a>
-            </div>
-        </div>
-        @endif
 
         <!-- DANGER ZONE -->
         <div class="card" style="border-color: rgba(239,68,68,0.2)">

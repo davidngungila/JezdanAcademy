@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
     Route::post('/settings', [DashboardController::class, 'updateSettings']);
+    Route::post('/settings/system', [DashboardController::class, 'updateSystemSettings'])->name('settings.system');
     Route::post('/settings/password', [DashboardController::class, 'updatePassword'])->name('settings.password');
     Route::post('/settings/delete', [DashboardController::class, 'deleteAccount'])->name('settings.delete');
 
