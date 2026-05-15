@@ -67,6 +67,14 @@
         .role-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
         .auth-skip{text-align:center;margin-top:18px;color:rgba(255,255,255,0.45);font-size:13px;}
         .auth-skip a{color:var(--accent);font-weight:600;cursor:pointer;}
+
+        /* ─── SPLASH SCREEN ─── */
+        #splashScreen{position:fixed;inset:0;background:var(--primary);z-index:10000;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;}
+        .splash-logo{font-size:48px;margin-bottom:24px;animation:pulse 1.5s infinite;}
+        .splash-loader{width:240px;height:4px;background:rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;margin-bottom:12px;position:relative;}
+        .splash-progress{height:100%;background:var(--accent);width:0%;transition:width 0.1s linear;}
+        .splash-pct{font-family:'Syne', sans-serif;font-size:32px;font-weight:800;letter-spacing:2px;}
+        .splash-status{font-size:13px;color:rgba(255,255,255,0.5);margin-top:8px;text-transform:uppercase;letter-spacing:1px;}
     </style>
 </head>
 <body>
@@ -84,6 +92,14 @@
         </div>
         @yield('content')
     </div>
+</div>
+
+<!-- SPLASH SCREEN -->
+<div id="splashScreen">
+    <div class="splash-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+    <div class="splash-loader"><div class="splash-progress" id="splashProgress"></div></div>
+    <div class="splash-pct" id="splashPct">0%</div>
+    <div class="splash-status" id="splashStatus">Authenticating...</div>
 </div>
 
 <script>
@@ -112,26 +128,63 @@
             return;
         }
 
+        // Show Splash Screen
+        const splash = document.getElementById('splashScreen');
+        const progress = document.getElementById('splashProgress');
+        const pctText = document.getElementById('splashPct');
+        const statusText = document.getElementById('splashStatus');
+        
+        splash.style.display = 'flex';
+        let currentPct = 0;
+        
+        // Counter Animation
+        const interval = setInterval(() => {
+            if (currentPct < 90) {
+                currentPct += Math.floor(Math.random() * 10) + 2;
+                if (currentPct > 90) currentPct = 90;
+                updateSplash(currentPct);
+            }
+        }, 150);
+
+        function updateSplash(val) {
+            progress.style.width = val + '%';
+            pctText.textContent = val + '%';
+            if (val > 30 && val < 60) statusText.textContent = 'Verifying Credentials...';
+            if (val >= 60 && val < 85) statusText.textContent = 'Setting up Dashboard...';
+            if (val >= 85) statusText.textContent = 'Finalizing...';
+        }
+
         // Real login logic via AJAX
         fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
             body: JSON.stringify({ email, password })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = data.redirect;
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
+                // Complete to 100%
+                clearInterval(interval);
+                updateSplash(100);
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 500);
             } else {
-                alert('Login failed. Please check your credentials.');
+                clearInterval(interval);
+                splash.style.display = 'none';
+                const errorMsg = data.errors ? Object.values(data.errors).flat()[0] : (data.message || 'Login failed');
+                alert(errorMsg);
             }
         })
         .catch(error => {
+            clearInterval(interval);
+            splash.style.display = 'none';
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            alert('An error occurred. Please ensure your database is running.');
         });
     }
 
