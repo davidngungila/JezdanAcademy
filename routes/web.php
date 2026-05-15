@@ -31,8 +31,14 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
     Route::post('/settings', [DashboardController::class, 'updateSettings']);
+    Route::post('/settings/password', [DashboardController::class, 'updatePassword'])->name('settings.password');
+    Route::post('/settings/delete', [DashboardController::class, 'deleteAccount'])->name('settings.delete');
 
-    // Other pages (Keep as is for now or implement as needed)
+    // Admin Management CRUDs
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
+    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/instructor', function () { return view('pages.instructor.index'); })->name('instructor');
     Route::get('/admin', function () { return view('pages.admin.index'); })->name('admin');
     Route::get('/organizations', function () { return view('pages.organizations.index'); })->name('organizations');
