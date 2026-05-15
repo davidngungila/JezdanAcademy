@@ -55,10 +55,25 @@
         /* Responsive Guest Layout */
         @media (max-width: 768px) {
             nav { height: 70px; }
-            .nav-links { display: none; } /* Hide links on mobile for simplicity in this static version */
+            .nav-links { 
+                display: none; 
+                position: absolute; 
+                top: 70px; 
+                left: 0; 
+                right: 0; 
+                background: white; 
+                flex-direction: column; 
+                padding: 20px; 
+                border-bottom: 1px solid var(--border);
+                gap: 16px;
+            }
+            .nav-links.open { display: flex; }
+            .mobile-menu-toggle { display: block !important; font-size: 24px; color: var(--primary); cursor: pointer; }
             .logo span { font-size: 18px; }
             .container { padding: 0 16px; }
         }
+
+        .mobile-menu-toggle { display: none; }
 
         @yield('styles')
     </style>
@@ -70,7 +85,8 @@
                 <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                 <span>Jezdan Academy</span>
             </a>
-            <div class="nav-links">
+            <div class="mobile-menu-toggle" onclick="toggleGuestMenu()"><i class="fa-solid fa-bars"></i></div>
+            <div class="nav-links" id="guestNavLinks">
                 <a href="/#courses" class="nav-link">Courses</a>
                 <a href="/#features" class="nav-link">Features</a>
                 <a href="/#about" class="nav-link">About Us</a>
@@ -124,6 +140,12 @@
         </div>
     </footer>
 
+    <script>
+        function toggleGuestMenu() {
+            const nav = document.getElementById('guestNavLinks');
+            if (nav) nav.classList.toggle('open');
+        }
+    </script>
     @stack('scripts')
 </body>
 </html>
