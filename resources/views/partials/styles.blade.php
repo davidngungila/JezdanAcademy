@@ -20,7 +20,9 @@
 .sidebar-footer{padding:16px;border-top:1px solid rgba(255,255,255,0.07);margin-top:auto;}
 .user-mini{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer;transition:var(--transition);}
 .user-mini:hover{background:rgba(255,255,255,0.06);}
-.user-mini .ava{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.ava{overflow:hidden;flex-shrink:0;}
+.ava img{width:100%;height:100%;object-fit:cover;display:block;}
+.user-mini .ava{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;}
 .user-mini .info{flex:1;min-width:0;}
 .user-mini .info strong{display:block;color:#fff;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .user-mini .info span{color:rgba(255,255,255,0.4);font-size:11px;}
@@ -48,14 +50,15 @@
 .theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
 .profile-chip{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:var(--bg);border:1px solid var(--border);border-radius:30px;cursor:pointer;transition:var(--transition);}
 .profile-chip:hover{border-color:var(--accent);}
-.profile-chip .ava{width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
+.profile-chip .ava{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
 .profile-chip span{font-size:13px;font-weight:600;color:var(--text);}
 
 /* ─── PROFILE DROPDOWN ─── */
 .profile-container{position:relative;}
 .profile-dropdown{position:absolute;top:calc(100% + 10px);right:0;width:220px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);display:none;z-index:100;animation:fadeUp .2s ease;}
 .profile-dropdown.open{display:block;}
-.dropdown-header{padding:16px;display:flex;flex-direction:column;}
+.dropdown-header{padding:16px;display:flex;flex-direction:column;align-items:flex-start;}
+.dropdown-header .ava{width:40px;height:40px;margin-bottom:10px;}
 .dropdown-header strong{font-size:14px;color:var(--text);font-weight:700;}
 .dropdown-header span{font-size:12px;color:var(--text-muted);margin-top:2px;}
 .dropdown-divider{height:1px;background:var(--border);margin:4px 0;}

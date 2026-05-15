@@ -30,13 +30,7 @@
                 <form action="/settings" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div style="text-align:center;margin-bottom:20px">
-                        <div style="width:82px;height:82px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 10px; overflow:hidden;">
-                            @if($user->avatar)
-                                <img src="{{ asset('storage/'.$user->avatar) }}" style="width:100%; height:100%; object-fit:cover;">
-                            @else
-                                {{ strtoupper(substr($user->name, 0, 2)) }}
-                            @endif
-                        </div>
+                        <x-user-avatar :user="$user" style="width:82px;height:82px;font-size:26px;margin:0 auto 10px;" />
                         <input type="file" name="avatar" id="avatarInput" style="display:none;" onchange="this.form.submit()">
                         <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('avatarInput').click()">
                             <i class="fa-solid fa-camera"></i> Change Photo

@@ -18,14 +18,13 @@
         <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode"><i class="fa-solid fa-moon" id="themeIcon"></i></div>
         <div class="profile-container">
             <div class="profile-chip" onclick="toggleProfileMenu(event)">
-                <div class="ava">
-                    {{ strtoupper(substr($user->name ?? 'JD', 0, 2)) }}
-                </div>
+                <x-user-avatar :user="$user" />
                 <span>{{ $user->name ?? 'John Doe' }}</span>
                 <i class="fa-solid fa-chevron-down" style="font-size:10px;color:var(--text-muted)"></i>
             </div>
             <div class="profile-dropdown" id="profileDropdown">
                 <div class="dropdown-header">
+                    <x-user-avatar :user="$user" />
                     <strong>{{ $user->name ?? 'John Doe' }}</strong>
                     <span>{{ $user->email ?? 'john.doe@jezdan.co.tz' }}</span>
                     <span class="badge badge-orange" style="margin-top:8px; font-size:10px; text-transform:uppercase">{{ str_replace('_', ' ', $role) }}</span>

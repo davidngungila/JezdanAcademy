@@ -1,6 +1,5 @@
 @php
-    $user = auth()->user();
-    $role = $user ? $user->role : 'student';
+    $role = auth()->user()?->role ?? 'student';
 @endphp
 
 <aside class="sidebar" id="sidebar">
@@ -92,19 +91,6 @@
         <a href="/settings" class="nav-item {{ request()->is('settings*') ? 'active' : '' }}">
             <i class="fa-solid fa-gear"></i> Settings
         </a>
-    </div>
-
-    <div class="sidebar-footer">
-        <div class="user-mini" onclick="window.location.href='/settings'">
-            <div class="ava">
-                {{ strtoupper(substr($user->name ?? 'JD', 0, 2)) }}
-            </div>
-            <div class="info">
-                <strong>{{ $user->name ?? 'John Doe' }}</strong>
-                <span>{{ str_replace('_', ' ', $role) }}</span>
-            </div>
-            <i class="fa-solid fa-ellipsis"></i>
-        </div>
     </div>
 </aside>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
