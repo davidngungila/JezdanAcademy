@@ -75,6 +75,11 @@
         .splash-progress{height:100%;background:var(--accent);width:0%;transition:width 0.1s linear;}
         .splash-pct{font-family:'Syne', sans-serif;font-size:32px;font-weight:800;letter-spacing:2px;}
         .splash-status{font-size:13px;color:rgba(255,255,255,0.5);margin-top:8px;text-transform:uppercase;letter-spacing:1px;}
+
+        /* ─── TOAST ─── */
+        .toast{position:fixed;bottom:24px;right:24px;background:var(--white);color:var(--text);padding:14px 20px;border-radius:12px;font-size:14px;display:flex;align-items:center;gap:10px;z-index:99999;box-shadow:var(--shadow-lg);animation:slideIn .3s ease;max-width:340px;border:1px solid var(--border);}
+        @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+        .toast i{font-size:16px;color:var(--accent);}
     </style>
 </head>
 <body>
@@ -124,7 +129,7 @@
         const password = document.getElementById('loginPassword').value;
         
         if(!email || !password) {
-            alert('Please enter your credentials');
+            showToast('Please enter your credentials', 'fa-circle-exclamation');
             return;
         }
 
@@ -177,15 +182,26 @@
                 clearInterval(interval);
                 splash.style.display = 'none';
                 const errorMsg = data.errors ? Object.values(data.errors).flat()[0] : (data.message || 'Login failed');
-                alert(errorMsg);
+                showToast(errorMsg, 'fa-circle-exclamation');
             }
         })
         .catch(error => {
             clearInterval(interval);
             splash.style.display = 'none';
             console.error('Error:', error);
-            alert('An error occurred. Please ensure your database is running.');
+            showToast('An error occurred. Please ensure your database is running.', 'fa-triangle-exclamation');
         });
+    }
+
+    function showToast(msg, icon='fa-circle-info') {
+        const t = document.createElement('div');
+        t.className='toast';
+        t.innerHTML=`<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+        document.body.appendChild(t);
+        setTimeout(()=>{
+            t.style.animation='slideIn .3s ease reverse';
+            setTimeout(()=>t.remove(),300);
+        },3000);
     }
 
     function socialLogin(provider) {
